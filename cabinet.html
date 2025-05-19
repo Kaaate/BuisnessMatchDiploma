@@ -1,0 +1,593 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Кабінет — Катерина Доброхотова</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: #f5f7fa;
+      color: #333;
+      display: flex;
+      height: 100vh;
+    }
+
+    aside {
+      width: 280px;
+      background: #1b2a4e;
+      color: #fff;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    aside h2 {
+      font-size: 1.6rem;
+      margin-bottom: 2rem;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    nav li {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.1rem;
+    }
+
+    nav li:hover {
+      color: #cce6ff;
+    }
+
+    nav li.active {
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    .logout-btn {
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .logout-btn:hover {
+      box-shadow: 0 0 10px rgba(255,255,255,0.7);
+      background: #cc0000;
+    }
+
+    .tab {
+      display: none;
+      animation: fade 0.5s ease-in-out;
+    }
+
+    .tab.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+    }
+
+    .info-label {
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+      color: #555;
+    }
+
+    .info-value {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .gallery, .video-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .gallery img, .video-grid iframe {
+      width: 300px;
+      border-radius: 8px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #999;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      aside {
+        display: none;
+      }
+
+      main {
+        padding: 1rem;
+      }
+
+      .gallery img, .video-grid iframe {
+        width: 100%;
+      }
+    }
+  
+<style>
+  .gallery-slider {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 1rem;
+  }
+
+  .gallery-slider img {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    width: 300px;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+</style>
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+<aside>
+  <div>
+    <h2><i class="fa-solid fa-user-circle"></i> BizMatch</h2>
+    <nav>
+      <ul style="gap: 2.5rem; margin-top: 2rem;">
+        <li class="active" onclick="showTab('profile')"><i class="fa-solid fa-user"></i> Профіль</li>
+        <li onclick="showTab('startups')"><i class="fa-solid fa-rocket"></i> Мої стартапи</li>
+        <li onclick="showTab('investments')"><i class="fa-solid fa-hand-holding-usd"></i> Інвестиції</li>
+        <li onclick="showTab('stats')"><i class="fa-solid fa-chart-line"></i> Статистика</li>
+        <li onclick="showTab('gallery')"><i class="fa-solid fa-image"></i> Галерея</li>
+        <li onclick="showTab('videos')"><i class="fa-solid fa-video"></i> Відео</li>
+        <li onclick="showTab('stories')"><i class='fa-solid fa-clapperboard'></i> Сторіс</li>
+        <li onclick="showTab('friends')"><i class='fa-solid fa-users'></i> Бізнес-друзі</li>
+<li onclick="showTab('currency')"><i class='fa-solid fa-money-bill-trend-up'></i> Курси валют</li>
+<li onclick="showTab('alerts')"><i class='fa-solid fa-bell'></i> Оповіщення</li>
+<li onclick="showTab('docs')"><i class="fa-solid fa-file"></i> Документи</li>
+      </ul>
+    </nav>
+  </div>
+  <button class="logout-btn" style="background:#fff; color:#1b2a4e; font-weight:600;" onclick="logout()">Вийти</button>
+</aside>
+
+<main>
+  <header>
+    <div class="user-info">
+      <img class="avatar" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Avatar" id="avatar">
+      <h1 id="userName">Катерина Доброхотова</h1>
+    </div>
+  </header>
+
+  <section class="tab active" id="profile">
+    <div class="card">
+      <div class="info-label">Email:</div>
+      <div class="info-value" id="userEmail">kate.dobro@example.com</div>
+<div class="info-label">Місто:</div>
+<div class="info-value">Київ</div>
+<div class="info-label">Рік народження:</div>
+<div class="info-value">1990</div>
+<div class="info-label">Телефон:</div>
+<div class="info-value">+380 67 123 4567</div>
+      <div class="info-label">Роль:</div>
+      <div class="info-value">Інвестор</div>
+    </div>
+  </section>
+
+  
+<section class="tab" id="startups">
+  <h2>Мої стартапи</h2>
+  <div class="project-grid">
+    <div class="project">
+      <img src="https://images.pexels.com/photos/3184312/pexels-photo-3184312.jpeg" alt="Startup A" />
+      <div class="desc">
+        <strong>HealthTech</strong><br />
+        Мобільний додаток для контролю здоров'я
+      </div>
+    </div>
+    <div class="project">
+      <img src="https://images.pexels.com/photos/3184321/pexels-photo-3184321.jpeg" alt="Startup B" />
+      <div class="desc">
+        <strong>EduFinance</strong><br />
+        Платформа для фінансової грамотності дітей
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  
+<section class="tab" id="investments">
+  <h2>Інвестиції</h2>
+  <div class="project-grid">
+    <div class="project">
+      <img src="https://images.pexels.com/photos/3184294/pexels-photo-3184294.jpeg" alt="Invest A" />
+      <div class="desc">
+        <strong>LogiChain</strong><br />
+        Логістика, $25,000
+      </div>
+    </div>
+    <div class="project">
+      <img src="https://images.pexels.com/photos/3184395/pexels-photo-3184395.jpeg" alt="Invest B" />
+      <div class="desc">
+        <strong>SolarTech</strong><br />
+        Альтернативна енергетика, $50,000
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Графік інвестицій</h3>
+    <p>[📊 Тут буде графік 2D/3D — інтегрується через JS бібліотеки]</p>
+  </div>
+</section>
+
+
+  <section class="tab" id="stats">
+  <div class="card"><h3>Статистика</h3><canvas id="myChart" width="400" height="200"></canvas></div>
+    <div class="card">
+      <p>• Переглядів профілю: <strong>198</strong></p>
+      <p>• Запитів на зв'язок: <strong>45</strong></p>
+    </div>
+  </section>
+
+  <section class="tab" id="gallery">
+    <h2>Фотогалерея</h2>
+    <div class="gallery-slider">
+<img src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg" alt="Бізнес 0">
+<img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg" alt="Бізнес 1">
+<img src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg" alt="Бізнес 2">
+<img src="https://images.pexels.com/photos/3184466/pexels-photo-3184466.jpeg" alt="Бізнес 3">
+<img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg" alt="Бізнес 4">
+<img src="https://images.pexels.com/photos/3184416/pexels-photo-3184416.jpeg" alt="Бізнес 5">
+<img src="https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg" alt="Бізнес 6">
+<img src="https://images.pexels.com/photos/3182763/pexels-photo-3182763.jpeg" alt="Бізнес 7">
+<img src="https://images.pexels.com/photos/3183186/pexels-photo-3183186.jpeg" alt="Бізнес 8">
+<img src="https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg" alt="Бізнес 9">
+<img src="https://images.pexels.com/photos/3184287/pexels-photo-3184287.jpeg" alt="Бізнес 10">
+<img src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg" alt="Бізнес 11">
+<img src="https://images.pexels.com/photos/3184312/pexels-photo-3184312.jpeg" alt="Бізнес 12">
+<img src="https://images.pexels.com/photos/3184321/pexels-photo-3184321.jpeg" alt="Бізнес 13">
+<img src="https://images.pexels.com/photos/3184294/pexels-photo-3184294.jpeg" alt="Бізнес 14">
+<img src="https://images.pexels.com/photos/3184395/pexels-photo-3184395.jpeg" alt="Бізнес 15">
+<img src="https://images.pexels.com/photos/3182791/pexels-photo-3182791.jpeg" alt="Бізнес 16">
+<img src="https://images.pexels.com/photos/3184353/pexels-photo-3184353.jpeg" alt="Бізнес 17">
+<img src="https://images.pexels.com/photos/3184358/pexels-photo-3184358.jpeg" alt="Бізнес 18">
+<img src="https://images.pexels.com/photos/3184356/pexels-photo-3184356.jpeg" alt="Бізнес 19">
+<img src="https://images.pexels.com/photos/3184361/pexels-photo-3184361.jpeg" alt="Бізнес 20">
+<img src="https://images.pexels.com/photos/3184362/pexels-photo-3184362.jpeg" alt="Бізнес 21">
+<img src="https://images.pexels.com/photos/3184354/pexels-photo-3184354.jpeg" alt="Бізнес 22">
+<img src="https://images.pexels.com/photos/3184365/pexels-photo-3184365.jpeg" alt="Бізнес 23">
+<img src="https://images.pexels.com/photos/3184387/pexels-photo-3184387.jpeg" alt="Бізнес 24">
+<img src="https://picsum.photos/seed/1/300/200" alt="Gallery 1">
+<img src="https://picsum.photos/seed/2/300/200" alt="Gallery 2">
+<img src="https://picsum.photos/seed/3/300/200" alt="Gallery 3">
+<img src="https://picsum.photos/seed/4/300/200" alt="Gallery 4">
+<img src="https://picsum.photos/seed/5/300/200" alt="Gallery 5">
+<img src="https://picsum.photos/seed/6/300/200" alt="Gallery 6">
+<img src="https://picsum.photos/seed/7/300/200" alt="Gallery 7">
+<img src="https://picsum.photos/seed/8/300/200" alt="Gallery 8">
+<img src="https://picsum.photos/seed/9/300/200" alt="Gallery 9">
+<img src="https://picsum.photos/seed/10/300/200" alt="Gallery 10">
+<img src="https://picsum.photos/seed/11/300/200" alt="Gallery 11">
+<img src="https://picsum.photos/seed/12/300/200" alt="Gallery 12">
+<img src="https://picsum.photos/seed/13/300/200" alt="Gallery 13">
+<img src="https://picsum.photos/seed/14/300/200" alt="Gallery 14">
+<img src="https://picsum.photos/seed/15/300/200" alt="Gallery 15">
+<img src="https://picsum.photos/seed/16/300/200" alt="Gallery 16">
+<img src="https://picsum.photos/seed/17/300/200" alt="Gallery 17">
+<img src="https://picsum.photos/seed/18/300/200" alt="Gallery 18">
+<img src="https://picsum.photos/seed/19/300/200" alt="Gallery 19">
+<img src="https://picsum.photos/seed/20/300/200" alt="Gallery 20">
+<img src="https://picsum.photos/seed/21/300/200" alt="Gallery 21">
+<img src="https://picsum.photos/seed/22/300/200" alt="Gallery 22">
+<img src="https://picsum.photos/seed/23/300/200" alt="Gallery 23">
+<img src="https://picsum.photos/seed/24/300/200" alt="Gallery 24">
+<img src="https://picsum.photos/seed/25/300/200" alt="Gallery 25">
+      <img src="https://images.pexels.com/photos/3184416/pexels-photo-3184416.jpeg" alt="Фото 1">
+      <img src="https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg" alt="Фото 2">
+    </div>
+  </section>
+
+  
+<section class="tab" id="stories">
+  <h2>Сторіс</h2>
+  <div class="gallery-slider">
+<img src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg" alt="Бізнес 0">
+<img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg" alt="Бізнес 1">
+<img src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg" alt="Бізнес 2">
+<img src="https://images.pexels.com/photos/3184466/pexels-photo-3184466.jpeg" alt="Бізнес 3">
+<img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg" alt="Бізнес 4">
+<img src="https://images.pexels.com/photos/3184416/pexels-photo-3184416.jpeg" alt="Бізнес 5">
+<img src="https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg" alt="Бізнес 6">
+<img src="https://images.pexels.com/photos/3182763/pexels-photo-3182763.jpeg" alt="Бізнес 7">
+<img src="https://images.pexels.com/photos/3183186/pexels-photo-3183186.jpeg" alt="Бізнес 8">
+<img src="https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg" alt="Бізнес 9">
+<img src="https://images.pexels.com/photos/3184287/pexels-photo-3184287.jpeg" alt="Бізнес 10">
+<img src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg" alt="Бізнес 11">
+<img src="https://images.pexels.com/photos/3184312/pexels-photo-3184312.jpeg" alt="Бізнес 12">
+<img src="https://images.pexels.com/photos/3184321/pexels-photo-3184321.jpeg" alt="Бізнес 13">
+<img src="https://images.pexels.com/photos/3184294/pexels-photo-3184294.jpeg" alt="Бізнес 14">
+<img src="https://images.pexels.com/photos/3184395/pexels-photo-3184395.jpeg" alt="Бізнес 15">
+<img src="https://images.pexels.com/photos/3182791/pexels-photo-3182791.jpeg" alt="Бізнес 16">
+<img src="https://images.pexels.com/photos/3184353/pexels-photo-3184353.jpeg" alt="Бізнес 17">
+<img src="https://images.pexels.com/photos/3184358/pexels-photo-3184358.jpeg" alt="Бізнес 18">
+<img src="https://images.pexels.com/photos/3184356/pexels-photo-3184356.jpeg" alt="Бізнес 19">
+<img src="https://images.pexels.com/photos/3184361/pexels-photo-3184361.jpeg" alt="Бізнес 20">
+<img src="https://images.pexels.com/photos/3184362/pexels-photo-3184362.jpeg" alt="Бізнес 21">
+<img src="https://images.pexels.com/photos/3184354/pexels-photo-3184354.jpeg" alt="Бізнес 22">
+<img src="https://images.pexels.com/photos/3184365/pexels-photo-3184365.jpeg" alt="Бізнес 23">
+<img src="https://images.pexels.com/photos/3184387/pexels-photo-3184387.jpeg" alt="Бізнес 24">
+<img src="https://picsum.photos/seed/story1/120/120" style="border-radius:50%; border:2px solid #2a7de1;" alt="Сторіс 1">
+<img src="https://picsum.photos/seed/story2/120/120" style="border-radius:50%; border:2px solid #2a7de1;" alt="Сторіс 2">
+<img src="https://picsum.photos/seed/story3/120/120" style="border-radius:50%; border:2px solid #2a7de1;" alt="Сторіс 3">
+<img src="https://picsum.photos/seed/story4/120/120" style="border-radius:50%; border:2px solid #2a7de1;" alt="Сторіс 4">
+<img src="https://picsum.photos/seed/story5/120/120" style="border-radius:50%; border:2px solid #2a7de1;" alt="Сторіс 5">
+<img src="https://picsum.photos/seed/story6/120/120" style="border-radius:50%; border:2px solid #2a7de1;" alt="Сторіс 6">
+<img src="https://picsum.photos/seed/story7/120/120" style="border-radius:50%; border:2px solid #2a7de1;" alt="Сторіс 7">
+<img src="https://picsum.photos/seed/story8/120/120" style="border-radius:50%; border:2px solid #2a7de1;" alt="Сторіс 8">
+<img src="https://picsum.photos/seed/story9/120/120" style="border-radius:50%; border:2px solid #2a7de1;" alt="Сторіс 9">
+<img src="https://picsum.photos/seed/story10/120/120" style="border-radius:50%; border:2px solid #2a7de1;" alt="Сторіс 10">
+  </div>
+</section>
+
+    
+    <div class="gallery-slider">
+<img src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg" alt="Бізнес 0">
+<img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg" alt="Бізнес 1">
+<img src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg" alt="Бізнес 2">
+<img src="https://images.pexels.com/photos/3184466/pexels-photo-3184466.jpeg" alt="Бізнес 3">
+<img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg" alt="Бізнес 4">
+<img src="https://images.pexels.com/photos/3184416/pexels-photo-3184416.jpeg" alt="Бізнес 5">
+<img src="https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg" alt="Бізнес 6">
+<img src="https://images.pexels.com/photos/3182763/pexels-photo-3182763.jpeg" alt="Бізнес 7">
+<img src="https://images.pexels.com/photos/3183186/pexels-photo-3183186.jpeg" alt="Бізнес 8">
+<img src="https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg" alt="Бізнес 9">
+<img src="https://images.pexels.com/photos/3184287/pexels-photo-3184287.jpeg" alt="Бізнес 10">
+<img src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg" alt="Бізнес 11">
+<img src="https://images.pexels.com/photos/3184312/pexels-photo-3184312.jpeg" alt="Бізнес 12">
+<img src="https://images.pexels.com/photos/3184321/pexels-photo-3184321.jpeg" alt="Бізнес 13">
+<img src="https://images.pexels.com/photos/3184294/pexels-photo-3184294.jpeg" alt="Бізнес 14">
+<img src="https://images.pexels.com/photos/3184395/pexels-photo-3184395.jpeg" alt="Бізнес 15">
+<img src="https://images.pexels.com/photos/3182791/pexels-photo-3182791.jpeg" alt="Бізнес 16">
+<img src="https://images.pexels.com/photos/3184353/pexels-photo-3184353.jpeg" alt="Бізнес 17">
+<img src="https://images.pexels.com/photos/3184358/pexels-photo-3184358.jpeg" alt="Бізнес 18">
+<img src="https://images.pexels.com/photos/3184356/pexels-photo-3184356.jpeg" alt="Бізнес 19">
+<img src="https://images.pexels.com/photos/3184361/pexels-photo-3184361.jpeg" alt="Бізнес 20">
+<img src="https://images.pexels.com/photos/3184362/pexels-photo-3184362.jpeg" alt="Бізнес 21">
+<img src="https://images.pexels.com/photos/3184354/pexels-photo-3184354.jpeg" alt="Бізнес 22">
+<img src="https://images.pexels.com/photos/3184365/pexels-photo-3184365.jpeg" alt="Бізнес 23">
+<img src="https://images.pexels.com/photos/3184387/pexels-photo-3184387.jpeg" alt="Бізнес 24">
+<img src="https://picsum.photos/seed/1/300/200" alt="Gallery 1">
+<img src="https://picsum.photos/seed/2/300/200" alt="Gallery 2">
+<img src="https://picsum.photos/seed/3/300/200" alt="Gallery 3">
+<img src="https://picsum.photos/seed/4/300/200" alt="Gallery 4">
+<img src="https://picsum.photos/seed/5/300/200" alt="Gallery 5">
+<img src="https://picsum.photos/seed/6/300/200" alt="Gallery 6">
+<img src="https://picsum.photos/seed/7/300/200" alt="Gallery 7">
+<img src="https://picsum.photos/seed/8/300/200" alt="Gallery 8">
+<img src="https://picsum.photos/seed/9/300/200" alt="Gallery 9">
+<img src="https://picsum.photos/seed/10/300/200" alt="Gallery 10">
+<img src="https://picsum.photos/seed/11/300/200" alt="Gallery 11">
+<img src="https://picsum.photos/seed/12/300/200" alt="Gallery 12">
+<img src="https://picsum.photos/seed/13/300/200" alt="Gallery 13">
+<img src="https://picsum.photos/seed/14/300/200" alt="Gallery 14">
+<img src="https://picsum.photos/seed/15/300/200" alt="Gallery 15">
+<img src="https://picsum.photos/seed/16/300/200" alt="Gallery 16">
+<img src="https://picsum.photos/seed/17/300/200" alt="Gallery 17">
+<img src="https://picsum.photos/seed/18/300/200" alt="Gallery 18">
+<img src="https://picsum.photos/seed/19/300/200" alt="Gallery 19">
+<img src="https://picsum.photos/seed/20/300/200" alt="Gallery 20">
+<img src="https://picsum.photos/seed/21/300/200" alt="Gallery 21">
+<img src="https://picsum.photos/seed/22/300/200" alt="Gallery 22">
+<img src="https://picsum.photos/seed/23/300/200" alt="Gallery 23">
+<img src="https://picsum.photos/seed/24/300/200" alt="Gallery 24">
+<img src="https://picsum.photos/seed/25/300/200" alt="Gallery 25">
+      <img src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg" alt="Сторіс 1">
+      <img src="https://images.pexels.com/photos/3184287/pexels-photo-3184287.jpeg" alt="Сторіс 2">
+    </div>
+</section>
+
+<section class="tab" id="videos">
+    <h2>Відео-презентації</h2>
+    <div class="video-grid">
+<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0&vq=hd720" frameborder="0" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/TcMBFSGVi1c" frameborder="0" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/DLX62G4lc44" frameborder="0" allowfullscreen></iframe>
+    <img src="https://images.pexels.com/photos/3183186/pexels-photo-3183186.jpeg" alt="Фото 3">
+<img src="https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg" alt="Фото 4">
+</div>
+  </section>
+
+  <section class="tab" id="docs">
+    <div class="card">
+      <p>📄 <a href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" target="_blank">Бізнес-план 2025</a></p>
+<p>📄 <a href="https://www.africau.edu/images/default/sample.pdf" target="_blank">Фінансова звітність</a></p>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 BizMatch. Створено Kate Dobrohotova
+  </footer>
+
+<!-- Modal for Stories -->
+<div id="storyModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); justify-content:center; align-items:center; z-index:9999;">
+  <img id="storyImage" src="" alt="Сторіс" style="max-width:90%; max-height:90%; border:5px solid white; border-radius:12px;">
+</div>
+
+</main>
+
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('nav li').forEach(l => l.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.closest('li').classList.add('active');
+  }
+
+  function logout() {
+    alert("Ви вийшли з акаунту.");
+    window.location.href = "login.html";
+  }
+
+  const user = {
+    name: "Катерина Доброхотова",
+    email: "kate.dobro@example.com",
+    avatar: "https://randomuser.me/api/portraits/women/44.jpg"
+  };
+
+  document.getElementById("userName").textContent = user.name;
+  document.getElementById("userEmail").textContent = user.email;
+  document.getElementById("avatar").src = user.avatar;
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const ctx = document.getElementById('myChart');
+  if (ctx) {
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+        datasets: [{
+          label: 'Інвестиції ($)',
+          data: [15000, 20000, 25000, 15000],
+          backgroundColor: '#2a7de1'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'top' },
+          title: { display: true, text: 'Динаміка інвестицій' }
+        }
+      }
+    });
+  }
+});
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const canvas = document.getElementById('threeCanvas');
+  if (canvas) {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas });
+
+    renderer.setSize(canvas.width, canvas.height);
+
+    const geometry = new THREE.CylinderGeometry(0.5, 0.5, 2, 32);
+    const material = new THREE.MeshStandardMaterial({ color: 0x2a7de1, metalness: 0.5, roughness: 0.3 });
+const light = new THREE.PointLight(0xffffff, 1);
+scene.add(light);
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    camera.position.z = 3;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  }
+});
+
+<script>
+document.querySelectorAll('#stories img').forEach(img => {
+  img.style.cursor = 'pointer';
+  img.onclick = function() {
+    const modal = document.getElementById('storyModal');
+    const storyImg = document.getElementById('storyImage');
+    storyImg.src = this.src;
+    modal.style.display = 'flex';
+  };
+});
+document.getElementById('storyModal').onclick = function() {
+  this.style.display = 'none';
+};
+</script>
+</body>
+</html>
+
+
+

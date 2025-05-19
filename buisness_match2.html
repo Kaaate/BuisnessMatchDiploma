@@ -1,0 +1,531 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BizMatch — Український LinkedIn для бізнесу</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    
+.topnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1rem 2rem;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.topnav nav {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.topnav nav a {
+  color: #2a7de1;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1.1rem;
+  position: relative;
+}
+
+.topnav nav a::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: #2a7de1;
+  width: 0%;
+  transition: width 0.3s;
+}
+
+.topnav nav a:hover::after {
+  width: 100%;
+}
+
+.topnav-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 1rem 2rem;
+      background: #fff;
+    }
+
+    .topnav a {
+      margin: 0 0.8rem;
+      color: #2a7de1;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+
+    .topnav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .topnav-buttons button {
+      padding: 0.5rem 1rem;
+      border: 2px solid var(--primary);
+      background: none;
+      color: var(--primary);
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .topnav-buttons button:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    :root {
+      --primary: #2a7de1;
+      --light: #f0f4fa;
+      --dark: #1c1e26;
+      --text: #222;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      color: var(--text);
+      background-color: white;
+    }
+
+    header {
+      background: var(--light);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      color: var(--primary);
+    }
+
+    nav {
+      margin-top: 1rem;
+    }
+
+    nav a {
+      margin: 0 1rem;
+      font-size: 1.1rem;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      display: block;
+      height: 2px;
+      background: var(--primary);
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .hero {
+      background: linear-gradient(to right, #2a7de1, #1b2a4e);
+      color: white;
+      padding: 6rem 2rem;
+      text-align: center;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero button {
+      background: white;
+      color: #2a7de1;
+      font-size: 1.1rem;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .hero button:hover {
+      background: #e0eaff;
+    }
+
+    section {
+      padding: 4rem 2rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .section-title {
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      max-width: 300px;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    footer {
+      background: var(--light);
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  
+body.dark {
+  background-color: #1c1e26;
+  color: #f0f0f0;
+}
+body.dark header,
+body.dark footer,
+body.dark .card,
+body.dark 
+.topnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1rem 2rem;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.topnav nav {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.topnav nav a {
+  color: #2a7de1;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1.1rem;
+  position: relative;
+}
+
+.topnav nav a::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: #2a7de1;
+  width: 0%;
+  transition: width 0.3s;
+}
+
+.topnav nav a:hover::after {
+  width: 100%;
+}
+
+.topnav-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+  background: #2b2f3a;
+  color: white;
+}
+
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+@media (max-width: 768px) {
+  .topnav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .topnav nav {
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .topnav-buttons {
+    margin-top: 1rem;
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+</style>
+</head>
+<body>
+
+
+<header>
+  <div class="topnav">
+    <div style="display: flex; align-items: center; gap: 2rem;">
+      <h1 style="margin: 0; font-size: 2rem; color: #2a7de1;">BizMatch</h1>
+      <nav>
+        <a href="#about">Про платформу</a>
+        <a href="#network">Нетворкінг</a>
+        <a href="#startups">Стартапи</a>
+        <a href="#investors">Інвестори</a>
+        <a href="#join">Приєднатись</a>
+        <a href="#contact">Контакти</a>
+      </nav>
+    </div>
+    <div class="topnav-buttons">
+      <button onclick="window.location.href='cabinet.html'">Кабінет</button>
+      <button onclick="toggleTheme()">🌙 Тема</button>
+    </div>
+  </div>
+</header>
+
+<section class="fade-in" class="hero style="position: relative; padding: 0; overflow: hidden; height: 90vh;">
+  <video autoplay muted loop playsinline style="position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
+    <source src="https://cdn.coverr.co/videos/coverr-business-meeting-people-8063/1080p.mp4" type="video/mp4">
+  </video>
+  <div style="position: relative; z-index: 2; color: #fff; text-align: center; padding-top: 20vh; font-family: Montserrat, sans-serif;">
+    <h2 style="font-size: 3rem; font-weight: 700; color: #ffffff;">Платформа для сміливих українських підприємців</h2>
+    <p style="font-size: 1.5rem; font-weight: 500; color: #f0f0f0; max-width: 700px; margin: 2rem auto;">Презентуйте свої ідеї. Шукайте інвесторів. Побудуйте реальні ділові стосунки. Усе це — в одному середовищі.</p>
+    <button onclick="window.location='#join'" style="background: white; color: #2a7de1; font-size: 1.1rem; padding: 0.8rem 1.5rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Долучитись</button>
+  </div>
+</section>
+
+  <h2>Український LinkedIn для бізнесменів</h2>
+  <p>Поєднуємо ідеї, інвестиції та партнерів в одному цифровому середовищі.</p>
+  <button onclick="window.location='#join'">Почати</button>
+</section>
+
+<section class="fade-in" id="about">
+  <p style="text-align: center; max-width: 800px; margin: 2rem auto; font-size: 1.2rem;">
+    Платформа створена для того, щоб українські підприємці, фахівці, стартапи та інвестори могли знаходити одне одного, обмінюватись контактами, будувати довготривалі ділові стосунки. BizMatch дозволяє вам бути частиною активної бізнес-спільноти, створювати власний профіль, додавати портфоліо, спілкуватися в чатах, отримувати рекомендації та бачити новини зі сфери українського бізнесу.
+  </p>
+  <h2 class="section-title">Що таке BizMatch?</h2>
+  <p style="text-align: center; max-width: 700px; margin: auto;">Це платформа, де українські підприємці, інвестори та стартапи можуть знаходити один одного, ділитись досвідом, будувати партнерства та залучати фінансування.</p>
+</section>
+
+<section class="fade-in" id="network">
+  <p style="text-align: center; max-width: 800px; margin: 2rem auto; font-size: 1.1rem;">
+    Один із ключових принципів — це сила зв'язків. BizMatch надає інструменти для пошуку нових партнерів, обговорення ідей, створення команд для реалізації спільних проєктів. Ви можете переглядати профілі інших користувачів, оцінювати їхню діяльність, зберігати контакти та коментувати публікації.
+  </p>
+  <h2 class="section-title">Нетворкінг та співпраця</h2>
+  <div class="grid">
+    <div class="card">
+      <img src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg" alt="Teamwork">
+      <p>Пошук бізнес-друзів, партнерів і команд.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg" alt="Networking">
+      <p>Профілі підприємців, інвесторів, консультантів.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg" alt="Communication">
+      <p>Месенджер, сторіс, інтеграція з соцмережами.</p>
+    </div>
+  
+    <div class="card">
+      <img src="https://images.pexels.com/photos/3182746/pexels-photo-3182746.jpeg" alt="Community">
+      <p>Обговорення кейсів, підтримка від спільноти.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.pexels.com/photos/3184328/pexels-photo-3184328.jpeg" alt="Connections">
+      <p>Календар зустрічей та відео-конференцій.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.pexels.com/photos/3184183/pexels-photo-3184183.jpeg" alt="Matchmaking">
+      <p>Інтелектуальне зіставлення інтересів учасників.</p>
+    </div>
+</div>
+</section>
+
+<section class="fade-in" id="startups">
+  <p style="text-align: center; max-width: 800px; margin: 2rem auto; font-size: 1.1rem;">
+    Для стартапів це шанс презентувати себе тисячам потенційних інвесторів та партнерів. Ви можете створити сторінку проєкту, додати фото, відео, фінансові документи, стратегію розвитку та навіть проходити верифікацію від незалежних експертів. Це підвищує довіру та полегшує пошук підтримки.
+  </p>
+  <h2 class="section-title">Платформа для стартапів</h2>
+  <div class="grid">
+    <div class="card">
+      <img src="https://images.pexels.com/photos/3184466/pexels-photo-3184466.jpeg" alt="Pitch">
+      <p>Презентація бізнес-ідей, відео, документи, пітчі.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.pexels.com/photos/3182763/pexels-photo-3182763.jpeg" alt="Platform">
+      <p>Валідовані проєкти, рейтинги та рекомендації.</p>
+    </div>
+  
+    <div class="card">
+      <img src="https://images.pexels.com/photos/3184415/pexels-photo-3184415.jpeg" alt="Docs">
+      <p>Фінансові звіти, презентації, PDF-пітчі.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.pexels.com/photos/3184417/pexels-photo-3184417.jpeg" alt="Incubator">
+      <p>Підключення до акселераторів і менторів.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.pexels.com/photos/3184162/pexels-photo-3184162.jpeg" alt="Feedback">
+      <p>Оцінки проєктів від спільноти.</p>
+    </div>
+</div>
+</section>
+
+<section class="fade-in" id="investors">
+  <p style="text-align: center; max-width: 800px; margin: 2rem auto; font-size: 1.1rem;">
+    Інвестори можуть обирати проєкти за категоріями, перевіряти бекграунд підприємців, аналізувати динаміку розвитку та використовувати вбудовану систему для супроводу своїх вкладень. BizMatch гарантує прозорість та безпеку на кожному етапі — від знайомства до фінансування.
+  </p>
+  <h2 class="section-title">Місце зустрічі інвесторів</h2>
+  <div class="grid">
+    <div class="card">
+      <img src="https://images.pexels.com/photos/3184395/pexels-photo-3184395.jpeg" alt="Investment">
+      <p>Каталог інвестиційних пропозицій з описами.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.pexels.com/photos/3184294/pexels-photo-3184294.jpeg" alt="Capital">
+      <p>Безпечна комунікація, аналітика та CRM для інвесторів.</p>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="fade-in" id="cabinet">
+  <h2 class="section-title">Ваш персональний кабінет</h2>
+  <p style="text-align: center; max-width: 800px; margin: auto; font-size: 1.1rem;">
+    Персоналізований простір, де ви зможете керувати своїм бізнес-профілем, додавати проєкти, переглядати аналітику, підписників і взаємодіяти з іншими користувачами в режимі реального часу. Увійдіть, щоб почати будувати свій діловий слід у цифровому світі!
+  </p>
+  <p style="text-align: center; margin-top: 2rem;">
+    <button onclick="window.location.href='login.html'" style="padding: 0.8rem 1.5rem; background: #2a7de1; color: white; border: none; border-radius: 8px; font-size: 1.1rem;">Увійти в кабінет</button>
+  </p>
+</section>
+
+
+<section class="fade-in" id="benefits">
+  <h2 class="section-title">Чому обирають BizMatch?</h2>
+  <div style="max-width: 900px; margin: auto; font-size: 1.1rem; line-height: 1.8;">
+    <ul style="list-style: none; padding-left: 0;">
+      <li>🔗 <strong>Ділові зв'язки:</strong> реальні знайомства, нетворкінг, B2B-контакти.</li>
+      <li>👤 <strong>Цифровий кабінет:</strong> зручне керування бізнес-профілем і проєктами.</li>
+      <li>✅ <strong>Прозорість:</strong> рейтинги, рекомендації, верифікація профілів.</li>
+      <li>📊 <strong>Інструменти:</strong> графіки, документи, CRM, валютні панелі.</li>
+      <li>📢 <strong>Спільнота:</strong> поради, сторіс, новини та підтримка.</li>
+      <li>🚀 <strong>Інновації:</strong> відео, 3D, автоматичний підбір контактів.</li>
+    </ul>
+  </div>
+</section>
+
+
+
+<section class="fade-in" id="contact">
+  <h2 class="section-title">Зв'язок з нами</h2>
+  <div style="max-width: 600px; margin: auto;">
+    <form onsubmit="alert('Дякуємо за повідомлення!'); return false;">
+      <label>Ім'я:<br><input type="text" required style="width:100%;padding:0.5rem;margin:0.5rem 0;"></label>
+      <label>Email:<br><input type="email" required style="width:100%;padding:0.5rem;margin:0.5rem 0;"></label>
+      <label>Повідомлення:<br><textarea rows="5" required style="width:100%;padding:0.5rem;margin:0.5rem 0;"></textarea></label>
+      <button type="submit" style="padding: 0.7rem 1.5rem; background: #2a7de1; color: white; border: none; border-radius: 6px; font-weight: 600;">Надіслати</button>
+    </form>
+  </div>
+</section>
+
+
+
+<footer>
+  © 2025 BizMatch. Зв'язок: contact@bizmatch.com | Створено Kate Dobrohotova
+</footer>
+
+
+<script>
+  function toggleTheme() {
+    document.body.classList.toggle('dark');
+  }
+</script>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
+
+

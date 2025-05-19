@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Вхід — BizMatch</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      min-height: 100vh;
+      background: url('https://images.pexels.com/photos/2175875/pexels-photo-2175875.jpeg') no-repeat center center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      z-index: 1;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 450px;
+      background: #ffffffdd;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.3rem;
+      margin-bottom: 2rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    input:focus {
+      border-color: #2a7de1;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 1rem;
+      background-color: #2a7de1;
+      color: white;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #1a5dc1;
+    }
+
+    .switch-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 1rem;
+    }
+
+    .switch-link a {
+      color: #2a7de1;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .error {
+      color: #d60000;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 1rem;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #f0f0f0;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Вхід до кабінету</h1>
+  <form onsubmit="handleLogin(event)">
+    <div id="error" class="error" style="display: none;">Введіть email і пароль</div>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" required />
+
+    <label for="password">Пароль</label>
+    <input type="password" id="password" required />
+
+    <button type="submit">Увійти</button>
+  </form>
+
+  <div class="switch-link">
+    Ще не маєте акаунту? <a href="register.html">Зареєструватись</a>
+  </div>
+</div>
+
+<footer>
+  © 2025 BizMatch. Створено Kate Dobrohotova
+</footer>
+
+<script>
+  function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const pass = document.getElementById('password').value.trim();
+    const error = document.getElementById('error');
+
+    if (!email || !pass) {
+      error.style.display = 'block';
+      error.textContent = 'Введіть email і пароль';
+    } else {
+      error.style.display = 'none';
+      alert("Успішний вхід! (тут можна додати реальну перевірку)");
+      // Додайте логіку перевірки або API-запит
+    }
+  }
+</script>
+
+</body>
+</html>
