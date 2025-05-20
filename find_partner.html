@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пошук Бізнес-Партнера | BizMatch</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: #1c1e26;
+      color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+      overflow-x: hidden;
+    }
+
+    .home-btn {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background-color: #2a7de1;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 999;
+    }
+
+    h1 {
+      margin: 3rem 0 2rem;
+      color: #2a7de1;
+      text-align: center;
+      font-size: 2.5rem;
+    }
+
+    .slider {
+      display: flex;
+      transition: transform 0.5s ease;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .card {
+      flex-shrink: 0;
+      width: 100%;
+      background: #2a2d3c;
+      padding: 3rem;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.35);
+      text-align: center;
+      margin-right: 2rem;
+    }
+
+    .question {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    button {
+      padding: 1rem;
+      background: #2a7de1;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: 600;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background: #1e5bbf;
+      transform: scale(1.03);
+    }
+
+    .match-card {
+      background: #2a2d3c;
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .match-card img {
+      width: 130px;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+
+    .rating {
+      margin-top: 0.75rem;
+      color: gold;
+      font-size: 1.3rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result, .swipe-section {
+      display: none;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .swipe-section {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .swipe-card {
+      background: #2a2d3c;
+      padding: 1.5rem;
+      border-radius: 16px;
+      text-align: center;
+      width: 100%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.25);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <button class="home-btn" onclick="location.href='https://leodvp.com/buisness_match2.html'">Головна</button>
+  <h1>Пошук Бізнес-Партнера</h1>
+  <div class="slider" id="slider"></div>
+  <div class="result" id="result"></div>
+  <div class="swipe-section" id="swipeSection"></div>
+
+  <script>
+    const questions = [
+      { q: "У якій сфері ти працюєш?", a: ["IT", "Будівництво", "Фінанси", "Освіта"] },
+      { q: "Що ти шукаєш?", a: ["Співзасновника", "Інвестора", "Партнера по продажах", "Технічного директора"] },
+      { q: "Який формат співпраці цікавий?", a: ["Онлайн", "Офлайн", "Гібрид"] },
+      { q: "Який досвід маєш?", a: ["Менше року", "1–3 роки", "3–5 років", "5+ років"] }
+    ];
+
+    const partners = [...Array(5)].map((_, i) => ({
+      name: `Бізнесмен №${i + 1}`,
+      field: ["IT", "Будівництво", "Фінанси", "Освіта"][i % 4],
+      about: "Має досвід у розвитку стартапів, відкритий до співпраці.",
+      photo: `https://randomuser.me/api/portraits/${i % 2 === 0 ? 'men' : 'women'}/${i + 20}.jpg`,
+      rating: (Math.random() * 2 + 3).toFixed(1)
+    }));
+
+    let current = 0;
+    let answers = [];
+    const slider = document.getElementById('slider');
+
+    questions.forEach((q, index) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="question">${q.q}</div>
+        <div class="options">
+          ${q.a.map(opt => `<button>${opt}</button>`).join('')}
+        </div>
+      `;
+      slider.appendChild(card);
+    });
+
+    slider.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', e => {
+        answers.push(e.target.textContent);
+        current++;
+        slider.style.transform = `translateX(-${current * 100}%)`;
+        if (current === questions.length) {
+          slider.innerHTML = '';
+          slider.style.display = 'none';
+          renderResult();
+        }
+      });
+    });
+
+    function renderResult() {
+      const result = document.getElementById('result');
+      result.style.display = 'block';
+      const swipeSection = document.getElementById('swipeSection');
+      swipeSection.style.display = 'flex';
+
+      const match = partners[Math.floor(Math.random() * partners.length)];
+      result.innerHTML = `
+        <h2>🎯 Результати</h2>
+        <p><strong>Твої відповіді:</strong></p>
+        <div>${answers.map(a => `<p>${a}</p>`).join('')}</div>
+        <div class="match-card">
+          <img src="${match.photo}" alt="Фото партнера">
+          <h3>${match.name}</h3>
+          <p><strong>Сфера:</strong> ${match.field}</p>
+          <p>${match.about}</p>
+          <div class="rating">⭐ ${match.rating}</div>
+        </div>
+      `;
+
+      swipeSection.innerHTML = '<h3>Інші кандидати</h3>' + partners.map(p => `
+        <div class="swipe-card">
+          <img src="${p.photo}" alt="Фото">
+          <h4>${p.name}</h4>
+          <p><strong>Сфера:</strong> ${p.field}</p>
+          <p>${p.about}</p>
+          <div class="rating">⭐ ${p.rating}</div>
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

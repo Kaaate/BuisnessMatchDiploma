@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Проєкти | BizMatch</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: #1c1e26;
+      color: #f0f0f0;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      color: #2a7de1;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+    .controls, .checkboxes {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      justify-content: center;
+    }
+    select, input[type="text"] {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: none;
+      background: #2a2d3c;
+      color: #f0f0f0;
+      font-size: 1rem;
+    }
+    .checkboxes label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .project-card {
+      background: #2a2d3c;
+      border-radius: 20px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-6px);
+    }
+    .project-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+    .project-card h3 {
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+    .project-card p {
+      color: #bbb;
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+    .project-card .type {
+      color: #2a7de1;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    .share-btn, .pdf-btn {
+      background: #2a7de1;
+      color: white;
+      border: none;
+      padding: 0.4rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin: 0.5rem 0.25rem;
+    }
+    .share-btn:hover, .pdf-btn:hover {
+      background: #1e5bbf;
+    }
+    .back-btn {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: #2a7de1;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #map {
+      width: 100%;
+      height: 400px;
+      margin: 2rem auto;
+      max-width: 1200px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <button class="back-btn" onclick="location.href='https://leodvp.com/buisness_match2.html'">Головна</button>
+  <h1>Проєкти для співпраці</h1>
+
+  <div class="controls">
+    <select id="sortType" onchange="renderProjects()">
+      <option value="default">Сортувати за замовчуванням</option>
+      <option value="type">За типом</option>
+      <option value="sector">За напрямком</option>
+    </select>
+    <select id="locationFilter" onchange="renderProjects()">
+      <option value="">Усі локації</option>
+      <option value="Київ">Київ</option>
+      <option value="Львів">Львів</option>
+      <option value="Одеса">Одеса</option>
+      <option value="Онлайн">Онлайн</option>
+    </select>
+    <select id="budgetFilter" onchange="renderProjects()">
+      <option value="">Усі бюджети</option>
+      <option value="<1000">До $1000</option>
+      <option value="1000-5000">$1000–$5000</option>
+      <option value=">5000">$5000+</option>
+    </select>
+    <input type="text" id="searchBox" oninput="renderProjects()" placeholder="Пошук за напрямом...">
+  </div>
+  <div class="checkboxes">
+    <label><input type="checkbox" id="partnerCheck" onchange="renderProjects()"> Готовий до партнерства</label>
+    <label><input type="checkbox" id="investCheck" onchange="renderProjects()"> Шукає інвестиції</label>
+    <label><input type="checkbox" id="saleCheck" onchange="renderProjects()"> Продаж бізнесу</label>
+  </div>
+
+  <div id="map"></div>
+  <div class="grid" id="projectGrid"></div>
+
+  <script>
+    const images = [
+      "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg",
+      "https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg",
+      "https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg",
+      "https://images.pexels.com/photos/3184463/pexels-photo-3184463.jpeg"
+    ];
+    const coords = {
+      "Київ": [50.45, 30.52],
+      "Львів": [49.84, 24.03],
+      "Одеса": [46.48, 30.73],
+      "Онлайн": [48.38, 31.17]
+    };
+    const map = L.map('map').setView([49.27, 31.15], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    const types = ["Інвестування", "Продаж", "Партнерство"];
+    const sectors = ["Кафе", "IT-платформа", "Маркетплейс", "Нанотехнології", "Освіта", "Туризм", "Будівництво", "Фінтех"];
+    const locations = Object.keys(coords);
+    const contacts = ["+380991112233", "+380671234567", "@bizinvest_bot", "invest@bizmatch.ua"];
+    const budgets = ["<1000", "1000-5000", ">5000"];
+
+    let projects = [...Array(50)].map((_, i) => {
+      const type = types[Math.floor(Math.random() * types.length)];
+      const sector = sectors[Math.floor(Math.random() * sectors.length)];
+      const location = locations[Math.floor(Math.random() * locations.length)];
+      const contact = contacts[Math.floor(Math.random() * contacts.length)];
+      const budget = budgets[Math.floor(Math.random() * budgets.length)];
+      return {
+        id: i + 1,
+        type,
+        sector,
+        location,
+        budget,
+        readyForPartnership: Math.random() > 0.5,
+        seekingInvestment: Math.random() > 0.5,
+        forSale: Math.random() > 0.5,
+        image: images[i % images.length] + '?auto=compress&cs=tinysrgb&h=200&random=' + i,
+        contact,
+        description: `${sector} у ${location}. Бюджет: ${budget}`
+      };
+    });
+
+    function renderProjects() {
+      const sort = document.getElementById('sortType').value;
+      const location = document.getElementById('locationFilter').value;
+      const budget = document.getElementById('budgetFilter').value;
+      const search = document.getElementById('searchBox').value.toLowerCase();
+      const partner = document.getElementById('partnerCheck').checked;
+      const invest = document.getElementById('investCheck').checked;
+      const sale = document.getElementById('saleCheck').checked;
+
+      let filtered = [...projects];
+      if (sort === 'type') filtered.sort((a, b) => a.type.localeCompare(b.type));
+      else if (sort === 'sector') filtered.sort((a, b) => a.sector.localeCompare(b.sector));
+
+      if (location) filtered = filtered.filter(p => p.location === location);
+      if (budget) filtered = filtered.filter(p => p.budget === budget);
+      if (search) filtered = filtered.filter(p => p.sector.toLowerCase().includes(search));
+      if (partner) filtered = filtered.filter(p => p.readyForPartnership);
+      if (invest) filtered = filtered.filter(p => p.seekingInvestment);
+      if (sale) filtered = filtered.filter(p => p.forSale);
+
+      projectGrid.innerHTML = '';
+      map.eachLayer(layer => { if (layer instanceof L.Marker) map.removeLayer(layer); });
+
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        card.innerHTML = `
+          <img src="${p.image}" alt="${p.sector}">
+          <div class="type">${p.type}</div>
+          <h3>Проєкт №${p.id}</h3>
+          <p><strong>${p.sector}</strong></p>
+          <p>${p.description}</p>
+          <p><strong>Локація:</strong> ${p.location}</p>
+          <p><strong>Контакт:</strong> ${p.contact}</p>
+          <button class="share-btn" onclick="shareProject('${p.id}', '${p.sector}', '${p.contact}')">Поділитися</button>
+          <button class="pdf-btn" onclick="downloadPDF(${JSON.stringify(p).replace(/"/g, '&quot;')})">PDF</button>
+        `;
+        projectGrid.appendChild(card);
+
+        L.marker(coords[p.location]).addTo(map).bindPopup(`<strong>${p.sector}</strong><br>${p.location}`);
+      });
+    }
+
+    function shareProject(id, sector, contact) {
+      const text = `📌 Проєкт №${id}\nНапрям: ${sector}\nКонтакт: ${contact}`;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Інформацію скопійовано у буфер обміну!");
+      });
+    }
+
+    function downloadPDF(project) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text(`Проєкт №${project.id}`, 10, 10);
+      doc.text(`Тип: ${project.type}`, 10, 20);
+      doc.text(`Напрям: ${project.sector}`, 10, 30);
+      doc.text(`Локація: ${project.location}`, 10, 40);
+      doc.text(`Бюджет: ${project.budget}`, 10, 50);
+      doc.text(`Контакт: ${project.contact}`, 10, 60);
+      doc.save(`project-${project.id}.pdf`);
+    }
+
+    renderProjects();
+  </script>
+</body>
+</html>

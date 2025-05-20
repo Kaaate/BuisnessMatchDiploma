@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Стартапи | BizMatch</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #1c1e26;
+      color: #f0f0f0;
+      padding: 2rem;
+    }
+    .btn {
+      background: #2a7de1;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-bottom: 2rem;
+    }
+    .startup {
+      background: #2a2d3c;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+    .startup img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+    .startup h2 {
+      color: #2a7de1;
+      margin: 0;
+    }
+    .startup p {
+      margin: 0.5rem 0;
+    }
+    .startup .btn {
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <button class="btn" onclick="location.href='https://leodvp.com/buisness_match2.html#projects'">Головна</button>
+
+  <div id="startupList"></div>
+
+  <script>
+    const startups = [...Array(40)].map((_, i) => ({
+      id: i + 1,
+      name: `Стартап ${i + 1}`,
+      industry: ['IT', 'Освіта', 'Медицина', 'Фінтех'][i % 4],
+      location: ['Київ', 'Львів', 'Одеса', 'Онлайн'][i % 4],
+      description: `Стартап №${i + 1} створений з метою змінити індустрію ${['IT', 'освіти', 'медицини', 'фінтеху'][i % 4]}. Наша команда складається з досвідчених спеціалістів та молодих новаторів. Ми маємо прототип, перших клієнтів та підтримку менторів. Прагнемо масштабуватися за межі України. Шукаємо підтримку від інвесторів, що поділяють наші цінності.`,
+      contact: ['@startup_bot', 'founder@idea.com', '+380991234567'][i % 3],
+      rating: (Math.random() * 2 + 3).toFixed(1),
+      image: `https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&h=300`,
+      investable: Math.random() > 0.5,
+      openToPartnership: Math.random() > 0.5,
+      remote: Math.random() > 0.5,
+      phone: '+38067' + (1000000 + i),
+      telegram: '@startup' + i,
+      viber: '+38067' + (2000000 + i),
+      whatsapp: '+38050' + (3000000 + i),
+      facebook: 'https://facebook.com/startup' + i,
+      kickstarter: 'https://www.kickstarter.com/projects/startup' + i,
+      investmentAmount: (i + 1) * 1000 + ' $',
+      responsiblePerson: 'Ім\'я Контактної Особи ' + (i + 1)
+    }));
+
+    const container = document.getElementById('startupList');
+
+    startups.forEach(s => {
+      const div = document.createElement('div');
+      div.className = 'startup';
+      div.innerHTML = `
+        <img src="${s.image}" alt="${s.name}">
+        <h2>${s.name}</h2>
+        <p><strong>Галузь:</strong> ${s.industry}</p>
+        <p><strong>Локація:</strong> ${s.location}</p>
+        <p><strong>Рейтинг:</strong> ⭐ ${s.rating}</p>
+        <p><strong>Інвестиція:</strong> ${s.investmentAmount}</p>
+        <p><strong>Відповідальна особа:</strong> ${s.responsiblePerson}</p>
+        <p><strong>Опис:</strong> ${s.description}</p>
+        <p><strong>Контакти:</strong><br>
+          Телефон: ${s.phone}<br>
+          Telegram: ${s.telegram}<br>
+          Viber: ${s.viber}<br>
+          WhatsApp: ${s.whatsapp}<br>
+          Facebook: <a href="${s.facebook}" target="_blank">посилання</a><br>
+          Kickstarter: <a href="${s.kickstarter}" target="_blank">кампанія</a>
+        </p>
+        <button class="btn" onclick='downloadStartupPDF(${JSON.stringify(s)})'>PDF</button>
+      `;
+      container.appendChild(div);
+    });
+
+    function downloadStartupPDF(s) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text(`Стартап: ${s.name}`, 10, 10);
+      doc.text(`Галузь: ${s.industry}`, 10, 20);
+      doc.text(`Локація: ${s.location}`, 10, 30);
+      doc.text(`Рейтинг: ${s.rating}`, 10, 40);
+      doc.text(`Інвестиція: ${s.investmentAmount}`, 10, 50);
+      doc.text(`Відповідальна особа: ${s.responsiblePerson}`, 10, 60);
+      doc.text(`Контакти: ${s.phone}, ${s.telegram}`, 10, 70);
+      doc.text(`Viber: ${s.viber}`, 10, 80);
+      doc.text(`WhatsApp: ${s.whatsapp}`, 10, 90);
+      doc.text(`Facebook: ${s.facebook}`, 10, 100);
+      doc.text(`Kickstarter: ${s.kickstarter}`, 10, 110);
+      doc.text(`Опис: ${s.description.substring(0, 100)}...`, 10, 120);
+      doc.save(`${s.name}.pdf`);
+    }
+  </script>
+</body>
+</html>

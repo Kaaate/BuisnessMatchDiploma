@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Адмін-панель | BizMatch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      background-color: #1c1e26;
+      color: #f0f0f0;
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 2rem;
+    }
+    .login-box, .dashboard {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: #2a2d3c;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+    h2 {
+      text-align: center;
+      color: #2a7de1;
+    }
+    input[type="password"] {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      border-radius: 8px;
+      border: none;
+      background: #1c1e26;
+      color: white;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      background: #2a7de1;
+      color: white;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .stat {
+      background: #1c1e26;
+      padding: 1rem;
+      border-radius: 10px;
+      margin: 1rem 0;
+      border: 1px solid #2a7de1;
+    }
+    .charts {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    canvas {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    .status {
+      margin-top: 2rem;
+      padding: 1rem;
+      border-radius: 10px;
+      background: #1c1e26;
+      border: 2px solid limegreen;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box" id="loginBox">
+    <h2>Увійдіть у Dashboard</h2>
+    <input type="password" id="password" placeholder="Введіть пароль">
+    <button onclick="checkLogin()">Увійти</button>
+  </div>
+
+  <div class="dashboard" id="dashboard" style="display: none;">
+    <h2>Статистика сайту</h2>
+    <div class="stat">Кількість зареєстрованих стартапів: <strong id="startupCount">0</strong></div>
+    <div class="stat">Кількість переглядів за день: <strong id="views">0</strong></div>
+    <div class="stat">Кількість анкет бізнесменів: <strong id="profiles">0</strong></div>
+    <div class="stat">Загальна сума запитаних інвестицій: <strong id="investment">0</strong></div>
+    <button onclick="downloadPDF()">Експортувати в PDF</button>
+    <div class="charts">
+      <canvas id="barChart"></canvas>
+      <canvas id="pieChart"></canvas>
+      <canvas id="lineChart"></canvas>
+      <canvas id="radarChart"></canvas>
+    </div>
+    <div class="status">Стан сайту: Стабільний і працює нормально ✅</div>
+  </div>
+
+  <script>
+    const stats = {
+      startups: 48,
+      views: 1540,
+      profiles: 50,
+      investment: 1200000
+    };
+
+    function checkLogin() {
+      const pass = document.getElementById('password').value;
+      if (pass === 'admin123') {
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        loadStats();
+        renderCharts();
+      } else {
+        alert('Невірний пароль');
+      }
+    }
+
+    function loadStats() {
+      document.getElementById('startupCount').textContent = stats.startups;
+      document.getElementById('views').textContent = stats.views;
+      document.getElementById('profiles').textContent = stats.profiles;
+      document.getElementById('investment').textContent = '$' + stats.investment.toLocaleString();
+    }
+
+    function renderCharts() {
+      new Chart(barChart, {
+        type: 'bar',
+        data: {
+          labels: ['Стартапи', 'Перегляди', 'Анкети', 'Інвестиції ($K)'],
+          datasets: [{
+            label: 'Значення',
+            data: [stats.startups, stats.views, stats.profiles, stats.investment / 1000],
+            backgroundColor: '#2a7de1'
+          }]
+        }
+      });
+
+      new Chart(pieChart, {
+        type: 'doughnut',
+        data: {
+          labels: ['IT', 'Фінтех', 'Освіта', 'Медицина'],
+          datasets: [{
+            data: [14, 12, 10, 12],
+            backgroundColor: ['#4dc9f6', '#f67019', '#f53794', '#537bc4']
+          }]
+        }
+      });
+
+      new Chart(lineChart, {
+        type: 'line',
+        data: {
+          labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'],
+          datasets: [{
+            label: 'Перегляди за тиждень',
+            data: [200, 300, 450, 600, 700, 650, 500],
+            fill: false,
+            borderColor: '#2a7de1'
+          }]
+        }
+      });
+
+      new Chart(radarChart, {
+        type: 'radar',
+        data: {
+          labels: ['UX', 'UI', 'Навантаження', 'SEO', 'Безпека', 'Доступність'],
+          datasets: [{
+            label: 'Оцінка системи',
+            data: [90, 80, 85, 70, 95, 88],
+            backgroundColor: 'rgba(42,125,225,0.2)',
+            borderColor: '#2a7de1'
+          }]
+        }
+      });
+    }
+
+    function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text("Звіт по сайту BizMatch", 10, 10);
+      doc.text(`Стартапів: ${stats.startups}`, 10, 20);
+      doc.text(`Переглядів: ${stats.views}`, 10, 30);
+      doc.text(`Анкет бізнесменів: ${stats.profiles}`, 10, 40);
+      doc.text(`Інвестиції: $${stats.investment}`, 10, 50);
+      doc.text("Стан: Стабільний ✅", 10, 60);
+      doc.save("bizmatch-dashboard.pdf");
+    }
+  </script>
+</body>
+</html>
