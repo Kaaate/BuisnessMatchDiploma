@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Преміум підписка | BizMatch</title>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #1c1e26;
+      color: #f0f0f0;
+      padding: 2rem;
+    }
+    .btn {
+      background: #2a7de1;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 1rem 0;
+    }
+    .subscription {
+      background: #2a2d3c;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    h1 {
+      color: #2a7de1;
+      margin-bottom: 1rem;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 1.5rem 0;
+    }
+    li {
+      background: #383b4f;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+    .price {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 1rem 0;
+      color: #4da6ff;
+    }
+  </style>
+</head>
+<body>
+  <button class="btn" onclick="goHome()">Головна</button>
+
+  <div class="subscription">
+    <h1>Преміум підписка BizMatch</h1>
+    <p>Отримайте більше можливостей для розвитку вашого бізнесу з преміум-функціоналом:</p>
+    <ul>
+      <li>Пріоритетне розміщення стартапів у списках</li>
+      <li>Доступ до закритих інвесторських пропозицій</li>
+      <li>Персональна підтримка та консультації</li>
+      <li>Аналітика про зацікавленість вашим проєктом</li>
+      <li>Можливість прямого зв'язку з VIP-користувачами</li>
+    </ul>
+    <div class="price">Вартість: 299 ₴ / місяць</div>
+    <button class="btn" onclick="subscribePremium()">Оформити підписку</button>
+  </div>
+
+  <script>
+    function goHome() {
+      window.location.href = 'https://kaaate.github.io/BuisnessMatchDiploma/';
+    }
+    function subscribePremium() {
+      alert("Дякуємо за інтерес до преміум-підписки! Зараз ми перенаправимо вас до платіжної сторінки.");
+      // Тут можна додати реальне посилання на платіжну систему
+      window.location.href = 'https://your-payment-page.com';
+    }
+  </script>
+</body>
+</html>

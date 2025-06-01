@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Бізнесмен | BizMatch</title>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #1c1e26;
+      color: #f0f0f0;
+      padding: 2rem;
+    }
+    .btn {
+      background: #2a7de1;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-bottom: 2rem;
+    }
+    .profile {
+      background: #2a2d3c;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .profile img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #2a7de1;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      color: #2a7de1;
+    }
+    .info p {
+      margin: 0.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <button class="btn" onclick="goHome()">Головна</button>
+
+  <div class="profile">
+    <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg" alt="Фото бізнесмена">
+    <h1>Олексій Мельник</h1>
+    <div class="info">
+      <p><strong>Професія:</strong> Підприємець, інвестор</p>
+      <p><strong>Компанія:</strong> MelTech Group</p>
+      <p><strong>Досвід:</strong> понад 15 років у сфері IT та фінансів</p>
+      <p><strong>Про себе:</strong> Засновник декількох успішних стартапів. Захоплюється технологіями та менторством молодих підприємців. Вірить у силу ідей та командну роботу.</p>
+      <p><strong>Контакти:</strong> <br>Email: melnyk@meltech.ua<br>Telegram: @alexmelnyk<br>LinkedIn: <a href="https://www.linkedin.com/in/alexmelnyk" target="_blank">alexmelnyk</a></p>
+    </div>
+  </div>
+
+  <script>
+    function goHome() {
+      window.location.href = 'https://kaaate.github.io/BuisnessMatchDiploma/';
+    }
+  </script>
+</body>
+</html>

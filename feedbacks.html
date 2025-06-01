@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Відгуки користувачів | BizMatch</title>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #1c1e26;
+      color: #f0f0f0;
+      padding: 2rem;
+    }
+    .btn {
+      background: #2a7de1;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-bottom: 2rem;
+    }
+    .content {
+      background: #2a2d3c;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #2a7de1;
+    }
+    .review {
+      border-bottom: 1px solid #3a3d4f;
+      padding: 1rem 0;
+    }
+    .review:last-child {
+      border-bottom: none;
+    }
+    .review h3 {
+      margin: 0;
+      color: #4da6ff;
+    }
+    .review p {
+      margin: 0.5rem 0 0;
+    }
+  </style>
+</head>
+<body>
+  <button class="btn" onclick="goHome()">Головна</button>
+
+  <div class="content">
+    <h1>Відгуки користувачів</h1>
+
+    <div class="review">
+      <h3>Ірина Коваль</h3>
+      <p>Дуже зручний сервіс! Змогла швидко знайти партнерів для розвитку мого стартапу. Рекомендую!</p>
+    </div>
+
+    <div class="review">
+      <h3>Олександр Петренко</h3>
+      <p>Чудова ідея платформи. Інтерфейс інтуїтивно зрозумілий, а служба підтримки — на високому рівні.</p>
+    </div>
+
+    <div class="review">
+      <h3>Марія Іванова</h3>
+      <p>Сподобався підхід до захисту даних та конфіденційності. Все чітко та прозоро.</p>
+    </div>
+
+    <div class="review">
+      <h3>Юрій Соколов</h3>
+      <p>Платформа допомогла знайти інвестора для мого проєкту. Велике спасибі команді BizMatch!</p>
+    </div>
+  </div>
+
+  <script>
+    function goHome() {
+      window.location.href = 'https://kaaate.github.io/BuisnessMatchDiploma/';
+    }
+  </script>
+</body>
+</html>
