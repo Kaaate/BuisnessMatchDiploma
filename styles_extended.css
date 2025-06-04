@@ -1,0 +1,81 @@
+/* Навігаційне меню */
+.navbar {
+  background-color: var(--primary);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  margin-left: 1.5rem;
+  font-weight: 500;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+/* Повідомлення / Алерти */
+.alert {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.alert.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert.info {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+
+.progress {
+  background-color: #eee;
+  border-radius: 20px;
+  overflow: hidden;
+  height: 20px;
+  margin-bottom: 1rem;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--primary);
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+/* Таблиця */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ccc;
+  padding: 0.8rem;
+  text-align: left;
+}
+
+.table th {
+  background-color: var(--primary);
+  color: white;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
