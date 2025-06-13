@@ -12,9 +12,6 @@
         if (typeof AmazonCognitoAdvancedSecurityData === "undefined") {
             return true;
         }
-
-        // UserpoolId is not available on frontend for springboard. We do not use userPoolId
-        // anyway other than put in context data. 
         var userPoolId = "";
         var clientId = getUrlParameter("client_id");
 
